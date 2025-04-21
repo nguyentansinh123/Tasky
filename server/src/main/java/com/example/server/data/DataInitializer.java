@@ -68,8 +68,8 @@ public class DataInitializer implements ApplicationListener<ApplicationReadyEven
 
     private void createDefaultRoleIfNotExits(Set<Roles> roles) {
         roles.stream()
-                .filter(role -> roleRepository.findByName(role).isEmpty()) // Pass the Roles enum directly
-                .map(Role::new) // Create a new Role entity
-                .forEach(roleRepository::save); // Save the Role entity
+                .filter(role -> roleRepository.findByName(role).isEmpty())
+                .map(Role::new)
+                .forEach(roleRepository::save);
     }
 }

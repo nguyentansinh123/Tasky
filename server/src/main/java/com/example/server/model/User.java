@@ -28,7 +28,7 @@ public class User {
 
     private String description;
 
-    private Boolean enabled = true;
+    private Boolean enabled = false;
 
     @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
     @JoinColumn(name = "profile_image_id")
