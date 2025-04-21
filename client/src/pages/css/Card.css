@@ -1,0 +1,59 @@
+.Card_container{
+    width: 333px;
+    height: 160px;
+    background-color:#EFEFEF ;
+    border-radius: 12px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+}
+.Card_container__Header{
+    display: flex;
+    justify-content: space-between;
+    margin-left: 10px;
+    margin-right: 10px;
+}
+.Card_container__Header-Text{
+    font-size: 16px;
+    color: #061257;
+}
+.Card_container__Header-Price{
+    font-size: 18px;
+    color: #061257;
+}
+.Card_container-Info{
+    margin-left: 15px;
+}
+.Card_container-Info__TaskInfo{
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    margin-top: 5px;
+}
+.Card_container-Info__TaskInfo_Icon{
+    color:#9BA0BC ;
+
+}
+.Card_container-Info__TaskInfo_text{
+    color: #6A719A;
+    font-size: 12px;
+}
+.Card_container__footer{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+}
+
+.Card_container__footer__OpenButton{
+    font-style: 14px;
+    color:#0A65FC ;
+    margin-left: 8px;
+}
+.Card_container__footer_Avatar{
+    height: 40px;
+    width: 40px;
+    background-color: rgb(187, 187, 187);
+    border-radius: 50%;
+    margin-right: 10px;
+}

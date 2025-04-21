@@ -1,0 +1,151 @@
+.signIn_Container {
+    display: flex;
+    min-height: 100vh;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.signIn_Container_Wrapper {
+    display: flex;
+    width: 100%;
+}
+
+.signIn_Container_Wrapper_FormSection {
+    flex: 0 0 50%;
+    padding: 3rem;
+    background-color: #ffffff;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.signIn_Container_Wrapper_Title {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 2rem;
+    font-weight: 700;
+    color: #2d3748;
+    margin-bottom: 1rem;
+}
+
+.signIn_Container_Wrapper_Subtitle {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: #718096;
+    margin-bottom: 2rem;
+}
+
+.signIn_Container_Wrapper_Form {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    max-width: 400px; 
+    margin: 0 auto; 
+    width: 100%;
+}
+
+.signIn_Container_Wrapper_FormField {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.signIn_Container_Wrapper_FormLabel {
+    font-weight: 600;
+    color: #4a5568;
+}
+
+.signIn_Container_Wrapper_FormInput {
+    padding: 0.75rem 1rem;
+    border: 1px solid #e2e8f0;
+    border-radius: 0.5rem;
+    font-size: 1rem;
+    width: 100%;
+}
+
+.signIn_Container_Wrapper_FormInput:focus {
+    outline: none;
+    border-color: #4299e1;
+    box-shadow: 0 0 0 2px rgba(66, 153, 225, 0.2);
+}
+
+.signIn_Container_Wrapper_SubmitButton {
+    background-color: #4299e1;
+    color: white;
+    padding: 0.75rem;
+    border: none;
+    border-radius: 0.5rem;
+    font-weight: 600;
+    cursor: pointer;
+    margin-top: 1rem;
+    width: 100%;
+}
+
+.signIn_Container_Wrapper_SubmitButton:hover {
+    background-color: #3182ce;
+}
+
+.signIn_Container_Wrapper_LoginPrompt {
+    text-align: center;
+    margin-top: 1.5rem;
+    color: #718096;
+}
+
+.signIn_Container_Wrapper_LoginLink {
+    color: #4299e1;
+    text-decoration: none;
+    font-weight: 600;
+}
+
+.signIn_Container_Wrapper_LoginLink:hover {
+    text-decoration: underline;
+}
+
+.signIn_Container_Wrapper_Divider {
+    display: flex;
+    align-items: center;
+    margin: 2rem 0;
+    color: #718096;
+}
+
+.signIn_Container_Wrapper_Divider::before,
+.signIn_Container_Wrapper_Divider::after {
+    content: "";
+    flex: 1;
+    border-bottom: 1px solid #e2e8f0;
+}
+
+.signIn_Container_Wrapper_DividerText {
+    padding: 0 1rem;
+}
+
+.signIn_Container_Wrapper_HeroSection {
+    flex: 0 0 50%; 
+    padding: 3rem;
+    background-color: #2D9CDB;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    background-size: cover;
+    background-position: center;
+    color: white;
+}
+
+.signIn_Container_Wrapper_HeroTitle {
+    font-size: 2.5rem;
+    font-weight: 700;
+    margin-bottom: 1.5rem;
+    max-width: 80%; 
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.signIn_Container_Wrapper_HeroText {
+    font-size: 1.1rem;
+    line-height: 1.6;
+    margin-bottom: 1rem;
+    max-width: 80%; 
+    margin-left: auto;
+    margin-right: auto;
+}
