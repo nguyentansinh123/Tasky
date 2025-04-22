@@ -6,7 +6,7 @@ import com.example.server.model.Review;
 import java.util.List;
 
 public interface IReviewService {
-    Review createReview(Long reviewerId, Long reviewedUserId, int starRating, String comments);
+    Review createReview(Long reviewedUserId, int starRating, String comments);
     List<Review> getReviewsByUserId(Long userId);
     void deleteReview(Long reviewId);
     Review updateReview(Long reviewId, int starRating, String comments);

@@ -86,6 +86,17 @@ public class UserService implements IUserService {
             throw new IllegalArgumentException("File cannot be empty");
         }
 
+        String email = SecurityContextHolder.getContext().getAuthentication().getName();
+
+        User authenticatedUser = userRepository.findByEmail(email);
+        if (authenticatedUser == null) {
+            throw new ResourceNotFoundException("Authenticated user not found with email: " + email);
+        }
+
+        if (!authenticatedUser.getId().equals(userId)) {
+            throw new IllegalArgumentException("You are not authorized to update this profile image");
+        }
+
         return userRepository.findById(userId).map(user -> {
             try {
                 Image profileImage = new Image();

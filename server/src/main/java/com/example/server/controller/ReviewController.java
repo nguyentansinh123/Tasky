@@ -19,11 +19,10 @@ public class ReviewController {
 
     @PostMapping("/add")
     public ResponseEntity<ApiResponse> createReview(
-            @RequestParam Long reviewerId,
             @RequestParam Long reviewedUserId,
             @RequestParam int starRating,
             @RequestParam String comments) {
-        Review review = reviewService.createReview(reviewerId, reviewedUserId, starRating, comments);
+        Review review = reviewService.createReview(reviewedUserId, starRating, comments);
         ReviewDto reviewDto = reviewService.convertReviewToDto(review);
         return ResponseEntity.ok(new ApiResponse("Review created successfully", true, reviewDto));
     }

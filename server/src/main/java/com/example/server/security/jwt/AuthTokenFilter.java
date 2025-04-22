@@ -31,20 +31,20 @@ public class AuthTokenFilter extends OncePerRequestFilter {
         try {
             String jwt = parseJwt(request);
             if (StringUtils.hasText(jwt) && jwtUtils.validateToken(jwt)) {
-                String username = jwtUtils.getUsernameFromToken(jwt);
-                UserDetails userDetails = userDetailsService.loadUserByUsername(username);
-                var auth = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
+                String email = jwtUtils.getUsernameFromToken(jwt);
+                UserDetails userDetails = userDetailsService.loadUserByUsername(email);
+
+                var auth = new UsernamePasswordAuthenticationToken(email, null, userDetails.getAuthorities());
                 SecurityContextHolder.getContext().setAuthentication(auth);
             }
         } catch (JwtException e) {
             response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-            response.getWriter().write(e.getMessage() +" : Invalid or expired token, you may login and try again!");
+            response.getWriter().write(e.getMessage() + " : Invalid or expired token, you may login and try again!");
             return;
-        }catch (Exception e){
+        } catch (Exception e) {
             response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
             response.getWriter().write(e.getMessage());
             return;
-
         }
         filterChain.doFilter(request, response);
     }

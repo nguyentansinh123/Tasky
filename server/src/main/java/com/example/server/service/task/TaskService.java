@@ -15,6 +15,7 @@ import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -36,23 +37,33 @@ public class TaskService implements ITaskService {
     private IImageService imageService;
     @Autowired
     private UserRepository userRepository;
-
     @Autowired
     private ModelMapper modelMapper;
 
 
-    @Override
     public Task addTask(AddTaskRequest request, List<MultipartFile> images) {
+        String email = SecurityContextHolder.getContext().getAuthentication().getName();
+        System.out.println("The Email is"+ email);
+        User uploadUser = userRepository.findByEmail(email);
+        if (uploadUser == null) {
+            throw new ResourceNotFoundException("User not found with email: " + email);
+        }
+
         Category category = Optional.ofNullable(categoryRepository.findByName(request.getCategory().getName()))
                 .orElseGet(() -> {
                     Category newCategory = new Category(request.getCategory().getName());
                     return categoryRepository.save(newCategory);
                 });
         request.setCategory(category);
-        Task task = taskRepository.save(createTask(request, category));
+
+        Task task = createTask(request, category);
+        task.setUploaduser(uploadUser);
+        task = taskRepository.save(task);
+
         if (images != null && !images.isEmpty()) {
             imageService.saveImages(images, task.getId());
         }
+
         return task;
     }
 
@@ -85,40 +96,81 @@ public class TaskService implements ITaskService {
 
     @Override
     public Task updateTask(UpdateTaskRequest request, Long taskId) {
-        return taskRepository.findById(taskId)
-                .map(existingTask -> updateTaskDetails(request, existingTask))
-                .map(taskRepository :: save)
-                .orElseThrow(()-> new ResourceNotFoundException("Task not found with id " + taskId));
+        String email = SecurityContextHolder.getContext().getAuthentication().getName();
+
+        // Fetch the authenticated user
+        User authenticatedUser = userRepository.findByEmail(email);
+        if (authenticatedUser == null) {
+            throw new ResourceNotFoundException("Authenticated user not found with email: " + email);
+        }
+
+        // Fetch the task and validate ownership
+        Task existingTask = taskRepository.findById(taskId)
+                .orElseThrow(() -> new ResourceNotFoundException("Task not found with id " + taskId));
+
+        if (!existingTask.getUploaduser().getId().equals(authenticatedUser.getId())) {
+            throw new IllegalArgumentException("You are not authorized to update this task");
+        }
+
+        // Update task details and save
+        updateTaskDetails(request, existingTask);
+        return taskRepository.save(existingTask);
+    }
+
+    private void updateTaskDetails(UpdateTaskRequest request, Task existingTask) {
+        if (request.getTaskName() != null) {
+            existingTask.setTaskName(request.getTaskName());
+        }
+        existingTask.setFlexibleDate(request.isFlexibleDate());
+        if (request.getDescription() != null) {
+            existingTask.setDescription(request.getDescription());
+        }
+        if (request.getLocation() != null) {
+            existingTask.setLocation(request.getLocation());
+        }
+        if (request.getStatus() != null) {
+            existingTask.setStatus(request.getStatus());
+        }
+        if (request.getTaskDate() != null) {
+            existingTask.setTaskDate(request.getTaskDate());
+        }
+        if (request.getDueDate() != null) {
+            existingTask.setDueDate(request.getDueDate());
+        }
+        if (request.getBudget() != null) {
+            existingTask.setBudget(request.getBudget());
+        }
+        if (request.getAcceptedUserId() != null) {
+            User acceptedUser = userRepository.findById(request.getAcceptedUserId())
+                    .orElseThrow(() -> new ResourceNotFoundException("Accepted user not found with id: " + request.getAcceptedUserId()));
+            existingTask.setAcceptedUser(acceptedUser);
+        }
     }
 
     @Override
-    public Task acceptTask(Long taskId, Long userId) {
+    public Task acceptTask(Long taskId) {
+        String email = SecurityContextHolder.getContext().getAuthentication().getName();
+
+        User user = userRepository.findByEmail(email);
+        if (user == null) {
+            throw new ResourceNotFoundException("User not found with email: " + email);
+        }
+
         Task task = taskRepository.findById(taskId)
                 .orElseThrow(() -> new ResourceNotFoundException("Task not found"));
-        User user = userRepository.findById(userId)
-                .orElseThrow(() -> new ResourceNotFoundException("User not found"));
 
-//        if (task.getUploaduser().getId().equals(userId)) {
-//            throw new ResourceNotFoundException("You cannot accept your own task");
-//        }
+        if (task.getAcceptedUser() != null) {
+            throw new IllegalStateException("This task has already been accepted by another user");
+        }
 
+        if (task.getUploaduser().getId().equals(user.getId())) {
+            throw new IllegalArgumentException("You cannot accept your own task");
+        }
         task.setAcceptedUser(user);
 
         return taskRepository.save(task);
     }
 
-    private Task updateTaskDetails(UpdateTaskRequest request, Task existingTask) {
-        if (request.getTaskName() != null) existingTask.setTaskName(request.getTaskName());
-        existingTask.setFlexibleDate(request.isFlexibleDate());
-        if (request.getDescription() != null) existingTask.setDescription(request.getDescription());
-        if (request.getLocation() != null) existingTask.setLocation(request.getLocation());
-        if (request.getStatus() != null) existingTask.setStatus(request.getStatus());
-        if (request.getTaskDate() != null) existingTask.setTaskDate(request.getTaskDate());
-        if (request.getDueDate() != null) existingTask.setDueDate(request.getDueDate());
-        if (request.getBudget() != null) existingTask.setBudget(request.getBudget());
-        if (request.getAcceptedUser() != null) existingTask.setAcceptedUser(request.getAcceptedUser());
-        return existingTask;
-    }
 
     @Override
     public List<Task> getAllTasks() {

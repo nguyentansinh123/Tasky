@@ -43,6 +43,7 @@ public class User {
     private List<Task> acceptedTasks;
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonIgnore
     private List<WorkExperience> workExperiences;
 
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
@@ -62,5 +63,6 @@ public class User {
     @JoinTable(name = "user_roles", joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"),
         inverseJoinColumns = @JoinColumn(name = "role_id", referencedColumnName = "id")
     )
+    @JsonManagedReference
     private Collection<Role> roles = new HashSet<>();
 }

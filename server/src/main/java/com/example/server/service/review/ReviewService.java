@@ -7,6 +7,7 @@ import com.example.server.repository.ReviewRepository;
 import com.example.server.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -21,16 +22,21 @@ public class ReviewService implements IReviewService {
     private final ModelMapper modelMapper;
 
     @Override
-    public Review createReview(Long reviewerId, Long reviewedUserId, int starRating, String comments) {
-        Optional<User> reviewer = userRepository.findById(reviewerId);
-        Optional<User> reviewedUser = userRepository.findById(reviewedUserId);
+    public Review createReview(Long reviewedUserId, int starRating, String comments) {
+        String email = SecurityContextHolder.getContext().getAuthentication().getName();
 
-        if (reviewer.isEmpty() || reviewedUser.isEmpty()) {
-            throw new IllegalArgumentException("Reviewer or Reviewed User not found");
+        User reviewer = userRepository.findByEmail(email);
+        if (reviewer == null) {
+            throw new IllegalArgumentException("Authenticated user not found with email: " + email);
+        }
+
+        Optional<User> reviewedUser = userRepository.findById(reviewedUserId);
+        if (reviewedUser.isEmpty()) {
+            throw new IllegalArgumentException("Reviewed User not found");
         }
 
         Review review = new Review();
-        review.setReviewer(reviewer.get());
+        review.setReviewer(reviewer);
         review.setReviewedUser(reviewedUser.get());
         review.setStarRating(starRating);
         review.setComments(comments);
@@ -45,21 +51,39 @@ public class ReviewService implements IReviewService {
 
     @Override
     public void deleteReview(Long reviewId) {
-        if (!reviewRepository.existsById(reviewId)) {
-            throw new IllegalArgumentException("Review not found");
+        String email = SecurityContextHolder.getContext().getAuthentication().getName();
+
+        User authenticatedUser = userRepository.findByEmail(email);
+        if (authenticatedUser == null) {
+            throw new IllegalArgumentException("Authenticated user not found with email: " + email);
         }
+
+        Review review = reviewRepository.findById(reviewId)
+                .orElseThrow(() -> new IllegalArgumentException("Review not found"));
+
+        if (!review.getReviewer().getId().equals(authenticatedUser.getId())) {
+            throw new IllegalArgumentException("You are not authorized to delete this review");
+        }
+
         reviewRepository.deleteById(reviewId);
     }
 
     @Override
     public Review updateReview(Long reviewId, int starRating, String comments) {
-        Optional<Review> existingReview = reviewRepository.findById(reviewId);
+        String email = SecurityContextHolder.getContext().getAuthentication().getName();
 
-        if (existingReview.isEmpty()) {
-            throw new IllegalArgumentException("Review not found");
+        User authenticatedUser = userRepository.findByEmail(email);
+        if (authenticatedUser == null) {
+            throw new IllegalArgumentException("Authenticated user not found with email: " + email);
         }
 
-        Review review = existingReview.get();
+        Review review = reviewRepository.findById(reviewId)
+                .orElseThrow(() -> new IllegalArgumentException("Review not found"));
+
+        if (!review.getReviewer().getId().equals(authenticatedUser.getId())) {
+            throw new IllegalArgumentException("You are not authorized to update this review");
+        }
+
         review.setStarRating(starRating);
         review.setComments(comments);
 

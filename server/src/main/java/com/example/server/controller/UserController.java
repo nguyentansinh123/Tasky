@@ -10,6 +10,7 @@ import com.example.server.response.ApiResponse;
 import com.example.server.service.user.IUserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -32,7 +33,7 @@ public class UserController {
             return ResponseEntity.status(NOT_FOUND).body(new ApiResponse(e.getMessage(), false,null));
         }
     }
-
+    @PreAuthorize("hasRole('ADMIN')")
     @GetMapping("/all")
     public ResponseEntity<ApiResponse> getAllUsers(){
         try {
@@ -73,11 +74,15 @@ public class UserController {
             return ResponseEntity.ok(new ApiResponse("Profile image updated successfully", true, url));
         } catch (ResourceNotFoundException e) {
             return ResponseEntity.status(NOT_FOUND).body(new ApiResponse(e.getMessage(), false, null));
-        } catch (Exception e) {
+        }catch (IllegalArgumentException e){
+            return ResponseEntity.status(CONFLICT).body(new ApiResponse(e.getMessage(), false, null));
+        }
+        catch (Exception e) {
             return ResponseEntity.status(500).body(new ApiResponse("Failed to update profile image", false, null));
         }
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @DeleteMapping("/{userId}/delete")
     public ResponseEntity<ApiResponse> deleteUser(@PathVariable Long userId){
         try {

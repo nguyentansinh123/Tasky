@@ -17,7 +17,7 @@ public interface ITaskService {
     void deleteTaskById(Long id);
     Task updateTask(UpdateTaskRequest task, Long taskId);
 
-    Task acceptTask(Long taskId, Long userId);
+    Task acceptTask(Long taskId);
 
     List<Task> getAllTasks();
     List<Task> getTasksByDueDate(LocalDateTime dueDate);

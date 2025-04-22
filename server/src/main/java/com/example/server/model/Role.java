@@ -1,6 +1,7 @@
 package com.example.server.model;
 
 import com.example.server.enums.Roles;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -29,5 +30,6 @@ public class Role {
     }
 
     @ManyToMany(mappedBy = "roles")
+    @JsonBackReference
     private Collection<User> users = new HashSet<>();
 }

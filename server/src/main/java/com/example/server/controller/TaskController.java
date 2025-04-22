@@ -9,6 +9,7 @@ import com.example.server.response.ApiResponse;
 import com.example.server.service.task.ITaskService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -16,8 +17,7 @@ import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.List;
 
-import static org.springframework.http.HttpStatus.INTERNAL_SERVER_ERROR;
-import static org.springframework.http.HttpStatus.NOT_FOUND;
+import static org.springframework.http.HttpStatus.*;
 
 @RestController
 @RequestMapping("${api.prefix}/tasks")
@@ -25,6 +25,7 @@ import static org.springframework.http.HttpStatus.NOT_FOUND;
 public class TaskController {
     private final ITaskService taskService;
 
+    @PreAuthorize("hasRole('CLIENT')")
     @PostMapping("/add")
     public ResponseEntity<ApiResponse> addTask(
             @RequestPart("task") AddTaskRequest request,
@@ -38,18 +39,24 @@ public class TaskController {
         }
     }
 
+    @PreAuthorize("hasRole('WORKER')")
+
     @PostMapping("/{taskId}/accept")
     public ResponseEntity<ApiResponse> UserAcceptTask(
-            @PathVariable Long taskId,
-            @RequestParam Long userId) {
+            @PathVariable Long taskId) {
         try {
-            Task acceptedTask = taskService.acceptTask(taskId, userId);
+            Task acceptedTask = taskService.acceptTask(taskId);
             return ResponseEntity.ok(new ApiResponse("Task accepted successfully", true, acceptedTask));
         } catch (ResourceNotFoundException e) {
             return ResponseEntity.status(NOT_FOUND).body(new ApiResponse(e.getMessage(), false, null));
+        }catch (IllegalArgumentException e){
+            return ResponseEntity.status(BAD_REQUEST).body(new ApiResponse(e.getMessage(), false, null));
+        }catch (Exception e){
+            return ResponseEntity.status(CONFLICT).body(new ApiResponse(e.getMessage(), false, null));
         }
     }
 
+    @PreAuthorize("hasRole('CLIENT')")
     @PutMapping("/update/{id}")
     public ResponseEntity<ApiResponse> updateTheTask(@PathVariable Long id, @RequestBody UpdateTaskRequest request) {
         try {
@@ -57,6 +64,8 @@ public class TaskController {
             return ResponseEntity.ok(new ApiResponse("Update Task Successful", true, task));
         } catch (ResourceNotFoundException e) {
             return ResponseEntity.status(INTERNAL_SERVER_ERROR).body(new ApiResponse(e.getMessage(), false, null));
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.status(BAD_REQUEST).body(new ApiResponse(e.getMessage(), false, null));
         }
     }
 
@@ -131,6 +140,7 @@ public class TaskController {
         }
     }
 
+    @PreAuthorize("hasRole('CLIENT')")
     @DeleteMapping("/delete/{id}")
     public ResponseEntity<ApiResponse> deleteTask(@PathVariable Long id) {
         try {

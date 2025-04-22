@@ -8,8 +8,10 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.core.io.ByteArrayResource;
 import org.springframework.core.io.Resource;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -25,12 +27,16 @@ import static org.springframework.http.HttpStatus.NOT_FOUND;
 public class ImageController {
     private final IImageService imageService;
 
+    @PreAuthorize("hasRole('CLIENT')")
     @PostMapping("/upload")
     public ResponseEntity<ApiResponse> saveImages(@RequestParam List<MultipartFile> files, @RequestParam Long taskId) {
         try {
             List<Image> image = imageService.saveImages(files, taskId);
             return ResponseEntity.ok(new ApiResponse("upload success", true ,image));
-        } catch (Exception e) {
+        }catch (ResourceNotFoundException e){
+            return ResponseEntity.status(NOT_FOUND).body(new ApiResponse("upload failed", false , e.getMessage()));
+        }
+        catch (Exception e) {
             return ResponseEntity.status(INTERNAL_SERVER_ERROR).body(new ApiResponse(e.getMessage(),false, null));
         }
     }
@@ -44,6 +50,7 @@ public class ImageController {
                 .body(resource);
     }
 
+    @PreAuthorize("hasRole('CLIENT')")
     @PutMapping("/image/{imageId}/update")
     public ResponseEntity<ApiResponse> updateImage(@PathVariable Long imageId, @RequestBody MultipartFile file){
         try {
@@ -55,11 +62,14 @@ public class ImageController {
             }
         } catch (ResourceNotFoundException e) {
             return ResponseEntity.status(NOT_FOUND).body(new ApiResponse(e.getMessage(), false,null));
+        }catch (IllegalArgumentException e){
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(new ApiResponse(e.getMessage(), false,null));
         }
 
         return ResponseEntity.status(INTERNAL_SERVER_ERROR).body(new ApiResponse("update failed",false, INTERNAL_SERVER_ERROR));
     }
 
+    @PreAuthorize("hasRole('CLIENT')")
     @DeleteMapping("/image/{imageId}/delete")
     public ResponseEntity<ApiResponse> deleteImage(@PathVariable Long imageId){
         try {

@@ -19,5 +19,6 @@ public class UpdateTaskRequest {
     private LocalDateTime taskDate;
     private LocalDateTime dueDate;
     private BigDecimal budget;
-    private User acceptedUser;
+//    private User acceptedUser;
+    private Long acceptedUserId;
 }

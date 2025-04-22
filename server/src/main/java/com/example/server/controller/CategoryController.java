@@ -7,6 +7,7 @@ import com.example.server.response.ApiResponse;
 import com.example.server.service.category.ICategoryService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -60,6 +61,7 @@ public class CategoryController {
         }
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @DeleteMapping("/category/{id}/delete")
     public ResponseEntity<ApiResponse> deleteCategory( @PathVariable Long id) {
         try {
