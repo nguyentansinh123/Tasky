@@ -11,6 +11,7 @@ import com.example.server.repository.UserRepository;
 import com.example.server.request.AddTaskRequest;
 import com.example.server.request.UpdateTaskRequest;
 import com.example.server.service.image.IImageService;
+import com.example.server.service.notification.INotificationService;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,6 +40,8 @@ public class TaskService implements ITaskService {
     private UserRepository userRepository;
     @Autowired
     private ModelMapper modelMapper;
+    @Autowired
+    private INotificationService notificationService;
 
 
     public Task addTask(AddTaskRequest request, List<MultipartFile> images) {
@@ -63,6 +66,9 @@ public class TaskService implements ITaskService {
         if (images != null && !images.isEmpty()) {
             imageService.saveImages(images, task.getId());
         }
+
+        // Send notification to all users about the new task
+        notificationService.notifyNewTask(task);
 
         return task;
     }
@@ -168,7 +174,11 @@ public class TaskService implements ITaskService {
         }
         task.setAcceptedUser(user);
 
-        return taskRepository.save(task);
+        Task savedTask = taskRepository.save(task);
+
+        notificationService.notifyTaskAccepted(savedTask, user);
+
+        return savedTask;
     }
 
 

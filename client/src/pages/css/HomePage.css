@@ -1,3 +1,281 @@
 .HomeBlock{
     display: block;
 }
+
+.homepage-container {
+  font-family: 'Inter', sans-serif;
+  color: #1a202c;
+  max-width: 100%;
+  overflow-x: hidden;
+}
+
+/* Hero Section */
+.hero-section {
+  padding: 5rem 2rem;
+  background-color: #fff;
+}
+
+.hero-content {
+  display: flex;
+  max-width: 1280px; /* Increased from 1200px */
+  margin: 0 auto;
+  align-items: center;
+  gap: 2rem;
+  padding: 0 1rem;
+}
+
+
+.hero-text h1 {
+  font-size: 2.5rem;
+  font-weight: 700;
+  margin-bottom: 1rem;
+  color: #1a202c;
+  line-height: 1.2;
+}
+
+.hero-text p {
+  color: #4a5568;
+  margin-bottom: 2rem;
+  font-size: 1rem;
+  line-height: 1.6;
+}
+
+.hero-image {
+  flex: 1.2; 
+  max-width: 650px; 
+}
+
+.hero-image img {
+  width: 100%;
+  height: auto;
+  border-radius: 8px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.12);
+  transition: transform 0.3s ease;
+}
+
+.hero-image img:hover {
+  transform: scale(1.02);
+}
+
+.email-signup {
+  display: flex;
+  margin-bottom: 2rem;
+  gap: 0.5rem;
+}
+
+.email-input {
+  flex: 1;
+  padding: 0.75rem 1rem;
+  border: 1px solid #e2e8f0;
+  border-radius: 4px;
+  font-size: 0.9rem;
+}
+
+.signup-button {
+  background-color: #3b82f6;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  padding: 0.75rem 1.5rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.signup-button:hover {
+  background-color: #2563eb;
+}
+
+.tech-tags {
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.tag {
+  background-color: #f3f4f6;
+  padding: 0.5rem 1rem;
+  border-radius: 4px;
+  font-size: 0.8rem;
+  color: #6b7280;
+}
+
+.services-section {
+  padding: 5rem 2rem;
+  text-align: center;
+  background-color: #f9fafb;
+}
+
+.services-section h2 {
+  font-size: 2rem;
+  margin-bottom: 3rem;
+  color: #1a202c;
+}
+
+.service-icons {
+  display: flex;
+  justify-content: center;
+  gap: 3rem;
+  flex-wrap: wrap;
+  max-width: 1000px;
+  margin: 0 auto 3rem;
+}
+
+.service-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 120px;
+}
+
+.icon-container {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 1rem;
+  color: white;
+  font-size: 1.5rem;
+}
+
+.trophy { background-color: #3b82f6; }
+.chat { background-color: #60a5fa; }
+.note { background-color: #93c5fd; }
+.star { background-color: #bfdbfe; }
+.megaphone { background-color: #3b82f6; }
+.document { background-color: #60a5fa; }
+
+.service-item p {
+  font-size: 0.9rem;
+  color: #4b5563;
+}
+
+.find-services-btn {
+  background-color: #3b82f6;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  padding: 0.75rem 1.75rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.find-services-btn:hover {
+  background-color: #2563eb;
+}
+
+.features-section {
+  padding: 5rem 2rem;
+  text-align: center;
+  background-color: white;
+  max-width: 700px;
+  margin: 0 auto;
+}
+
+.features-section h2 {
+  font-size: 2rem;
+  margin-bottom: 1.5rem;
+  color: #1a202c;
+}
+
+.features-section p {
+  color: #4b5563;
+  margin-bottom: 2rem;
+  line-height: 1.6;
+}
+
+.features-buttons {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+}
+
+.insights-btn, .contact-btn {
+  padding: 0.75rem 1.75rem;
+  border-radius: 4px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.insights-btn {
+  background-color: white;
+  border: 1px solid #e5e7eb;
+  color: #4b5563;
+}
+.contact-btn {
+    background-color: #3b82f6;
+    color: white;
+    border: 1px solid #3b82f6;
+  }
+  
+  .insights-btn:hover {
+    background-color: #f9fafb;
+  }
+  
+  .contact-btn:hover {
+    background-color: #2563eb;
+  }
+  
+  .homepage-footer {
+    padding: 2rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-top: 1px solid #e5e7eb;
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+  
+  .footer-logo h2 {
+    font-weight: 700;
+    color: #3b82f6;
+    font-size: 1.5rem;
+  }
+  
+  .copyright {
+    color: #6b7280;
+    font-size: 0.9rem;
+  }
+  
+  .social-links {
+    display: flex;
+    gap: 1.5rem;
+  }
+  
+  .social-links a {
+    color: #6b7280;
+    font-size: 1.25rem;
+    transition: color 0.2s;
+  }
+  
+  .social-links a:hover {
+    color: #3b82f6;
+  }
+  
+  @media (max-width: 768px) {
+    .hero-content {
+      flex-direction: column;
+    }
+    
+    .hero-text {
+      text-align: center;
+    }
+    
+    .hero-image {
+      max-width: 100%;
+    }
+    
+    .service-icons {
+      gap: 2rem;
+    }
+    
+    .homepage-footer {
+      flex-direction: column;
+      gap: 1.5rem;
+      text-align: center;
+    }
+  }

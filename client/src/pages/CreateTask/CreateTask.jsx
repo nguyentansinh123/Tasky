@@ -1,12 +1,12 @@
 import React, { useState } from 'react';
 import '../css/CreateTask.css';
-import ProgressBar from '../../components/ProgressBar';
-import Navbar from '../../components/Navbar';
+import DatePicker from 'react-datepicker';
+import 'react-datepicker/dist/react-datepicker.css';
 
 const CreateTask = ({ onNext, onBack }) => {
   const [taskData, setTaskData] = useState({
-    onDate: '',
-    beforeDate: '',
+    onDate: null,
+    beforeDate: null,
     isFlexible: false,
     taskTitle: ''
   });
@@ -19,7 +19,7 @@ const CreateTask = ({ onNext, onBack }) => {
     setTaskData(prev => ({
       ...prev,
       [name]: value,
-      isFlexible: false // Turn off flexible when selecting dates
+      isFlexible: false 
     }));
   };
 
@@ -27,20 +27,28 @@ const CreateTask = ({ onNext, onBack }) => {
     setTaskData(prev => ({
       ...prev,
       isFlexible: !prev.isFlexible,
-      onDate: '',
-      beforeDate: ''
+      onDate: null,
+      beforeDate: null
     }));
   };
 
-  // Placeholder function for calendar selection - to be implemented
   const handleDateSelect = (date, type) => {
     console.log(`Selected ${type} date:`, date);
-    // This will be implemented when you add the calendar component
     if (type === 'onDate') {
-      setTaskData(prev => ({ ...prev, onDate: date }));
+      setTaskData(prev => ({ 
+        ...prev, 
+        onDate: date, 
+        beforeDate: null, 
+        isFlexible: false 
+      }));
       setShowOnDateCalendar(false);
     } else {
-      setTaskData(prev => ({ ...prev, beforeDate: date }));
+      setTaskData(prev => ({ 
+        ...prev, 
+        beforeDate: date, 
+        onDate: null, 
+        isFlexible: false 
+      }));
       setShowBeforeDateCalendar(false);
     }
   };
@@ -58,6 +66,15 @@ const CreateTask = ({ onNext, onBack }) => {
     onNext();
   };
 
+  const formatDate = (date) => {
+    if (!date) return '';
+    return new Date(date).toLocaleDateString('en-US', {
+      month: 'short',
+      day: 'numeric',
+      year: 'numeric'
+    });
+  };
+
   return (
     <>
       <div className="create-task-container">
@@ -69,39 +86,43 @@ const CreateTask = ({ onNext, onBack }) => {
               <label className="form-label">When do you need it done?</label>
               <div className="date-options">
                 <div className="date-option-group">
-                  <select 
-                    className="date-select" 
-                    name="onDate"
-                    value={taskData.onDate}
-                    onChange={handleChange}
-                    onClick={() => setShowOnDateCalendar(true)}
+                  <button 
+                    type="button"
+                    className={`date-select ${taskData.onDate ? 'active' : ''}`}
+                    onClick={() => setShowOnDateCalendar(!showOnDateCalendar)}
                   >
-                    <option value="">On date</option>
-                    <option value="specific">Select date</option>
-                  </select>
+                    {taskData.onDate ? formatDate(taskData.onDate) : 'On date'}
+                  </button>
                   {showOnDateCalendar && (
-                    <div className="calendar-placeholder">
-                      {/*Calendar component will go here */}
+                    <div className="calendar-container">
+                      <DatePicker
+                        selected={taskData.onDate}
+                        onChange={(date) => handleDateSelect(date, 'onDate')}
+                        inline
+                        minDate={new Date()}
+                        calendarClassName="custom-calendar"
+                      />
                     </div>
                   )}
                 </div>
 
                 <div className="date-option-group">
-                  <select 
-                    className="date-select" 
-                    name="beforeDate"
-                    value={taskData.beforeDate}
-                    onChange={handleChange}
-                    onClick={() => setShowBeforeDateCalendar(true)}
+                  <button 
+                    type="button"
+                    className={`date-select ${taskData.beforeDate ? 'active' : ''}`}
+                    onClick={() => setShowBeforeDateCalendar(!showBeforeDateCalendar)}
                   >
-                    <option value="">Before date</option>
-                    <option value="specific">Select date</option>
-                  </select>
-                  {/* Calendar will be inserted here */}
+                    {taskData.beforeDate ? formatDate(taskData.beforeDate) : 'Before date'}
+                  </button>
                   {showBeforeDateCalendar && (
-                    <div className="calendar-placeholder">
-                      {/* Replace this div with your calendar component */}
-                      {/* <p>Calendar component will go here</p> */}
+                    <div className="calendar-container">
+                      <DatePicker
+                        selected={taskData.beforeDate}
+                        onChange={(date) => handleDateSelect(date, 'beforeDate')}
+                        inline
+                        minDate={new Date()}
+                        calendarClassName="custom-calendar"
+                      />
                     </div>
                   )}
                 </div>

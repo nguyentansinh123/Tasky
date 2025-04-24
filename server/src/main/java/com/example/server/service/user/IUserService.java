@@ -21,4 +21,5 @@ public interface IUserService {
     User getAuthenticatedUser();
 
 
+    User updateUserRole(Long userId, String roleName);
 }

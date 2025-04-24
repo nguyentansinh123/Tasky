@@ -3,11 +3,13 @@ package com.example.server.service.user;
 import com.example.server.dto.UserDto;
 import com.example.server.exceptions.ResourceNotFoundException;
 import com.example.server.model.Image;
+import com.example.server.model.Role;
 import com.example.server.model.User;
 import com.example.server.repository.ImageRepository;
 import com.example.server.repository.UserRepository;
 import com.example.server.request.CreateUserRequest;
 import com.example.server.request.UpdateUserRequest;
+import com.example.server.service.role.IRoleService;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.security.core.Authentication;
@@ -19,6 +21,7 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.sql.rowset.serial.SerialBlob;
 import java.io.IOException;
 import java.sql.SQLException;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
 
@@ -30,6 +33,7 @@ public class UserService implements IUserService {
     private final ImageRepository imageRepository;
     private final ModelMapper modelMapper;
     private final PasswordEncoder passwordEncoder;
+    private final IRoleService roleService;
 
 
     @Override
@@ -113,7 +117,7 @@ public class UserService implements IUserService {
                 user.setProfileImage(savedImage);
                 userRepository.save(user);
 
-                return downloadUrl; // Return the download URL
+                return downloadUrl;
             } catch (IOException | SQLException e) {
                 throw new RuntimeException("Failed to upload file", e);
             }
@@ -135,6 +139,27 @@ public class UserService implements IUserService {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String email = authentication.getName();
         return userRepository.findByEmail(email);
+    }
+
+
+    @Override
+    public User updateUserRole(Long userId, String roleName) {
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new ResourceNotFoundException("User not found with ID: " + userId));
+
+        Optional<Role> roleOptional = roleService.findByName(roleName);
+        Role role = roleOptional.orElseThrow(() ->
+                new ResourceNotFoundException("Role not found with name: " + roleName));
+
+        if (user.getRoles() == null) {
+            user.setRoles(new HashSet<>());
+        } else {
+            user.getRoles().clear();
+        }
+
+        user.getRoles().add(role);
+
+        return userRepository.save(user);
     }
 
 }

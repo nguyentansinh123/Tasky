@@ -25,7 +25,7 @@ import static org.springframework.http.HttpStatus.*;
 public class TaskController {
     private final ITaskService taskService;
 
-    @PreAuthorize("hasRole('CLIENT')")
+    @PreAuthorize("hasAuthority('CLIENT')")
     @PostMapping("/add")
     public ResponseEntity<ApiResponse> addTask(
             @RequestPart("task") AddTaskRequest request,
@@ -39,7 +39,7 @@ public class TaskController {
         }
     }
 
-    @PreAuthorize("hasRole('WORKER')")
+    @PreAuthorize("hasAuthority('WORKER')")
 
     @PostMapping("/{taskId}/accept")
     public ResponseEntity<ApiResponse> UserAcceptTask(
@@ -56,7 +56,7 @@ public class TaskController {
         }
     }
 
-    @PreAuthorize("hasRole('CLIENT')")
+    @PreAuthorize("hasAuthority('CLIENT')")
     @PutMapping("/update/{id}")
     public ResponseEntity<ApiResponse> updateTheTask(@PathVariable Long id, @RequestBody UpdateTaskRequest request) {
         try {
@@ -140,7 +140,7 @@ public class TaskController {
         }
     }
 
-    @PreAuthorize("hasRole('CLIENT')")
+    @PreAuthorize("hasAuthority('CLIENT')")
     @DeleteMapping("/delete/{id}")
     public ResponseEntity<ApiResponse> deleteTask(@PathVariable Long id) {
         try {

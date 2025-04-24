@@ -42,7 +42,8 @@ public class ShopConfig {
                     "/api/v1/categories/**",
                     "/api/v1/users/**",
                     "/api/v1/reviews/**",
-                    "/api/v1/work-experiences/**");
+                    "/api/v1/work-experiences/**",
+                    "/api/v1/roles/**");
 
     @Bean
     public ModelMapper modelMapper() {

@@ -1,9 +1,30 @@
-import React from 'react'
+import React, { useState } from 'react'
+import { Link } from 'react-router-dom'
 import '../css/Register.css'
 import GoogleIcon from "@mui/icons-material/Google";
 
-
 const Register = () => {
+    const [formData, setFormData] = useState({
+        email: '',
+        firstName: '',
+        lastName: '',
+        password: ''
+    });
+
+    const handleChange = (e) => {
+        const { id, value } = e.target;
+        setFormData(prev => ({
+            ...prev,
+            [id]: value
+        }));
+    };
+
+    const handleSubmit = (e) => {
+        e.preventDefault();
+        console.log('Form submitted:', formData);
+        // Add registration logic here
+    };
+
     return (
         <div className="signup-container">
           <div className="signup-form-section">
@@ -20,35 +41,61 @@ const Register = () => {
               <span className="divider-line"></span>
             </div>
             
-            <form className="signup-form">
-              <div className="form-group">
-                <label htmlFor="email" className="form-label">Email Address</label>
-                <input
-                  type="email"
-                  id="email"
-                  className="form-input"
-                  placeholder="Enter your email address"
-                />
-              </div>
-              
-              <div className="form-group">
-                <label htmlFor="fullname" className="form-label">Full Name</label>
-                <input
-                  type="text"
-                  id="fullname"
-                  className="form-input"
-                  placeholder="Enter your full name"
-                />
-              </div>
-              
-              <div className="form-group">
-                <label htmlFor="password" className="form-label">Password</label>
-                <input
-                  type="password"
-                  id="password"
-                  className="form-input"
-                  placeholder="Create your password"
-                />
+            <form className="signup-form" onSubmit={handleSubmit}>
+              <div className="compact-form">
+                <div className="form-group">
+                  <label htmlFor="email" className="form-label">Email Address</label>
+                  <input
+                    type="email"
+                    id="email"
+                    className="form-input"
+                    placeholder="Enter email"
+                    value={formData.email}
+                    onChange={handleChange}
+                    required
+                  />
+                </div>
+                
+                <div className="form-row">
+                  <div className="form-group half-width">
+                    <label htmlFor="firstName" className="form-label">First Name</label>
+                    <input
+                      type="text"
+                      id="firstName"
+                      className="form-input"
+                      placeholder="First name"
+                      value={formData.firstName}
+                      onChange={handleChange}
+                      required
+                    />
+                  </div>
+                  
+                  <div className="form-group half-width">
+                    <label htmlFor="lastName" className="form-label">Last Name</label>
+                    <input
+                      type="text"
+                      id="lastName"
+                      className="form-input"
+                      placeholder="Last name"
+                      value={formData.lastName}
+                      onChange={handleChange}
+                      required
+                    />
+                  </div>
+                </div>
+                
+                <div className="form-group">
+                  <label htmlFor="password" className="form-label">Password</label>
+                  <input
+                    type="password"
+                    id="password"
+                    className="form-input"
+                    placeholder="Create password"
+                    value={formData.password}
+                    onChange={handleChange}
+                    required
+                  />
+                </div>
               </div>
               
               <button type="submit" className="signup-btn">
@@ -57,7 +104,7 @@ const Register = () => {
             </form>
             
             <p className="login-prompt">
-              Already have an account? <a href="#" className="login-link">Login</a>
+              Already have an account? <Link to="/login" className="login-link">Login</Link>
             </p>
           </div>
           
@@ -69,11 +116,12 @@ const Register = () => {
               Your extraordinary voyage starts now.
             </p>
             <p className="hero-text">
-              Whether you seek the thrill of uncharted paths or the tranquility of breathtaking landscapes,
+              Join thousands of travelers who have already discovered new destinations, 
+              made lifelong connections, and created memories that last forever.
             </p>
           </div>
         </div>
-      );
+    );
 }
 
 export default Register

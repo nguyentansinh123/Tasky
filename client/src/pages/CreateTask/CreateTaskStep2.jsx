@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import '../css/CreateTask.css';
 
 const CreateTaskStep2 = ({ onNext, onBack }) => {
@@ -6,6 +6,8 @@ const CreateTaskStep2 = ({ onNext, onBack }) => {
     description: '',
     location: ''
   });
+  const autocompleteRef = useRef(null);
+  const inputRef = useRef(null);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -16,6 +18,48 @@ const CreateTaskStep2 = ({ onNext, onBack }) => {
     e.preventDefault();
     onNext();
   };
+  
+
+  useEffect(() => {
+    const apiKey = import.meta.env.VITE_GOOGLE_API_KEY;
+    function initAutocomplete() {
+      if (inputRef.current && window.google) {
+        autocompleteRef.current = new window.google.maps.places.Autocomplete(
+          inputRef.current,
+          { types: ['address'] }
+        );
+
+        autocompleteRef.current.addListener('place_changed', () => {
+          const place = autocompleteRef.current.getPlace();
+          setDetails(prev => ({
+            ...prev,
+            location: place.formatted_address || inputRef.current.value
+          }));
+        });
+      }
+    }
+
+    if (!window.google || !window.google.maps) {
+      const script = document.createElement('script');
+      script.src = `https://maps.googleapis.com/maps/api/js?key=${apiKey}&libraries=places`;
+      script.async = true;
+      script.defer = true;
+      script.onload = initAutocomplete;
+      document.head.appendChild(script);
+      return () => {
+        document.head.removeChild(script);
+      };
+    } else {
+      initAutocomplete();
+    }
+
+    return () => {
+      // Clean up listener if component unmounts
+      if (autocompleteRef.current && window.google) {
+        window.google.maps.event.clearInstanceListeners(autocompleteRef.current);
+      }
+    };
+  }, []);
 
   return (
     <form onSubmit={handleSubmit}>
@@ -42,6 +86,7 @@ const CreateTaskStep2 = ({ onNext, onBack }) => {
             Where does this need to be done?
           </label>
           <input 
+            ref={inputRef}
             type="text" 
             className="task-input"
             name="location"

@@ -1,7 +1,27 @@
-import React from 'react'
+import React, { useState } from 'react'
 import '../css/LogIn.css'
+import { Link, Links } from 'react-router-dom'
 
 const LogIn = () => {
+    const [formData, setFormData] = useState({
+        email: '',
+        password: ''
+    });
+
+    const handleChange = (e) => {
+        const { name, value } = e.target;
+        setFormData(prevState => ({
+            ...prevState,
+            [name]: value
+        }));
+    };
+
+    const handleSubmit = (e) => {
+        e.preventDefault();
+        console.log('Form submitted:', formData);
+        // Add your login logic here
+    };
+
     return(
         <div className="signIn_Container">
           <div className="signIn_Container_Wrapper">
@@ -9,16 +29,20 @@ const LogIn = () => {
             <div className="signIn_Container_Wrapper_FormSection">
               <h1 className="signIn_Container_Wrapper_Title">Welcome to App name</h1>
               <p className="signIn_Container_Wrapper_Subtitle">
-                Kindly fill in your details below to create an account
+                Kindly fill in your details below to sign in
               </p>
     
-              <form className="signIn_Container_Wrapper_Form">
+              <form className="signIn_Container_Wrapper_Form" onSubmit={handleSubmit}>
                 <div className="signIn_Container_Wrapper_FormField">
                   <label className="signIn_Container_Wrapper_FormLabel">Email Address</label>
                   <input 
                     type="email" 
+                    name="email"
                     className="signIn_Container_Wrapper_FormInput" 
-                    value="Daphne Smith"
+                    placeholder="Enter your email"
+                    value={formData.email}
+                    onChange={handleChange}
+                    required
                   />
                 </div>
     
@@ -26,18 +50,22 @@ const LogIn = () => {
                   <label className="signIn_Container_Wrapper_FormLabel">Password</label>
                   <input 
                     type="password" 
+                    name="password"
                     className="signIn_Container_Wrapper_FormInput" 
                     placeholder="••••••••" 
+                    value={formData.password}
+                    onChange={handleChange}
+                    required
                   />
                 </div>
     
                 <button type="submit" className="signIn_Container_Wrapper_SubmitButton">
-                  Register with us
+                  Sign In
                 </button>
               </form>
     
               <p className="signIn_Container_Wrapper_LoginPrompt">
-                Already have an account? <a href="#" className="signIn_Container_Wrapper_LoginLink">Login</a>
+                Don't have an account? <Link to="/register" className="signIn_Container_Wrapper_LoginLink">Register</Link>
               </p>
     
               <div className="signIn_Container_Wrapper_Divider">
