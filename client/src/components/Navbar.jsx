@@ -19,10 +19,10 @@ const Navbar = () => {
         <div className="navbar-actions-container">
             <div className="navbar-icons">
                 <ChatBubbleIcon className='navbar-icon'/>
-                <div className="notification-wrapper">
+                <Link to={'/notification'} className="notification-wrapper">
                     <NotificationsIcon className='navbar-icon'/>
                     <span className="notification-badge">3</span>
-                </div>
+                </Link>
             </div>
             <div className="navbar-profile">
                 <img 

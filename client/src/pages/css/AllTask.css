@@ -7,6 +7,10 @@
     margin: 0 auto;
     cursor: pointer;
   }
+  a, li, ul{
+    text-decoration: none;
+    list-style: none;
+  }
   
   @media (max-width: 768px) {
     .all-tasks-grid {
