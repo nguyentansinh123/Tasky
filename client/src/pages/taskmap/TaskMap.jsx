@@ -115,7 +115,6 @@ const TaskMap = ({ taskLocations = [] }) => {
       setDistance(results.routes[0].legs[0].distance.text)
       setDuration(results.routes[0].legs[0].duration.text)
       
-      // Fit the map to the route bounds
       const bounds = new google.maps.LatLngBounds()
       results.routes[0].legs[0].steps.forEach(step => {
         bounds.extend(step.start_location)
@@ -135,7 +134,6 @@ const TaskMap = ({ taskLocations = [] }) => {
     originRef.current.value = ''
     destinationRef.current.value = ''
     
-    // Restore markers view
     if (markers.length > 0) {
       const bounds = new google.maps.LatLngBounds();
       markers.forEach(marker => {

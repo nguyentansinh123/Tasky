@@ -6,6 +6,7 @@ import com.example.server.model.Category;
 import com.example.server.model.Task;
 import com.example.server.model.User;
 import com.example.server.repository.CategoryRepository;
+import com.example.server.repository.NotificationRepository;
 import com.example.server.repository.TaskRepository;
 import com.example.server.repository.UserRepository;
 import com.example.server.request.AddTaskRequest;
@@ -42,6 +43,7 @@ public class TaskService implements ITaskService {
     private ModelMapper modelMapper;
     @Autowired
     private INotificationService notificationService;
+
 
 
     public Task addTask(AddTaskRequest request, List<MultipartFile> images) {
@@ -216,6 +218,18 @@ public class TaskService implements ITaskService {
     public List<Task> getTasksByLocation(String location) {
         return taskRepository.findByLocation(location);
     }
+
+    @Override
+    public List<Task> getTasksByCurrentUser() {
+        String email = SecurityContextHolder.getContext().getAuthentication().getName();
+        User user = userRepository.findByEmail(email);
+        if (user == null) {
+            throw new ResourceNotFoundException("User not found with email: " + email);
+        }
+
+        return taskRepository.findByUploaduserId(user.getId());
+    }
+
 
     @Override
     public TaskDto convertTaskToDto(Task task) {

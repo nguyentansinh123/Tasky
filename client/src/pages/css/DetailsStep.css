@@ -1,4 +1,4 @@
-  .details-wrapper {
+.details-wrapper {
     max-width: 800px;
     margin: 0 auto;
     padding: 2rem;
@@ -209,4 +209,72 @@
     .nav-button {
       width: 100%;
     }
+  }
+
+  .task-summary {
+    margin-top: 20px;
+    padding: 15px;
+    background-color: #f7f9fc;
+    border-radius: 8px;
+    border-left: 4px solid #2D9CDB;
+  }
+
+  .task-summary h4 {
+    margin-top: 0;
+    color: #2D9CDB;
+  }
+
+  .task-summary p {
+    margin: 5px 0;
+  }
+
+  .image-preview-container {
+    margin-top: 15px;
+    width: 100%;
+  }
+
+  .image-previews {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-top: 10px;
+  }
+
+  .image-preview-item {
+    position: relative;
+    width: 80px;
+    height: 80px;
+    border-radius: 8px;
+    overflow: hidden;
+    border: 1px solid #e0e0e0;
+  }
+
+  .image-preview {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .remove-image-btn {
+    position: absolute;
+    top: 4px;
+    right: 4px;
+    background: rgba(0, 0, 0, 0.5);
+    color: white;
+    border: none;
+    border-radius: 50%;
+    width: 20px;
+    height: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    font-size: 10px;
+    padding: 0;
+  }
+
+  .error-message {
+    color: #e74c3c;
+    font-size: 14px;
+    margin-top: 5px;
   }

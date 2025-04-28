@@ -20,4 +20,6 @@ public interface TaskRepository extends JpaRepository<Task, Long> {
     List<Task> findByDueDate(LocalDateTime dueDate);
 
     List<Task> findByTaskDate(LocalDateTime taskDate);
+
+    List<Task> findByUploaduserId(Long id);
 }

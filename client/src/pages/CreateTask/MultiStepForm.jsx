@@ -8,8 +8,12 @@ import DetailsStep from './DetailsStep';
 
 const MultiStepForm = () => {
   const [step, setStep] = useState(1);
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const [formData, setFormData] = useState({
     deadlineType: '',
+    onDate: null,
+    beforeDate: null,
+    isFlexible: false,
     taskTitle: '',
     description: '',
     location: '',
@@ -38,6 +42,9 @@ const MultiStepForm = () => {
   const updateFormData = (newData) => {
     setFormData(prev => ({ ...prev, ...newData }));
   };
+
+  const handleSubmitStart = () => setIsSubmitting(true);
+  const handleSubmitEnd = () => setIsSubmitting(false);
 
   const renderStep = () => {
     switch (step) {
@@ -68,6 +75,8 @@ const MultiStepForm = () => {
                  onBack={prevStep} 
                  formData={formData}
                  updateFormData={updateFormData}
+                 onSubmitStart={handleSubmitStart}
+                 onSubmitEnd={handleSubmitEnd}
                />;
       default:
         return <CreateTask 
@@ -82,7 +91,11 @@ const MultiStepForm = () => {
   return (
     <>
       <div className="create-task-container">
-        <ProgressBar currentStep={step} totalSteps={totalSteps} />
+        <ProgressBar 
+          currentStep={step} 
+          totalSteps={totalSteps} 
+          isSubmitting={isSubmitting}
+        />
         {renderStep()}
       </div>
     </>

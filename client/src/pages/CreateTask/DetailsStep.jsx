@@ -1,26 +1,36 @@
 import React, { useState } from 'react';
 import '../css/DetailsStep.css';
+import { useNavigate } from 'react-router-dom';
+import { useAuthStore } from '../../store/useAuthStore';
+import { useTaskStore } from '../../store/useTaskStore';
 
-const DetailsStep = ({ onNext, onBack }) => {
-  const [details, setDetails] = useState({
-    additionalInfo: '',
-    images: []
-  });
+const DetailsStep = ({ onNext, onBack, onSubmitStart, onSubmitEnd }) => {
+  const navigate = useNavigate();
+  const { getToken } = useAuthStore();
+  const { 
+    taskForm, 
+    updateTaskForm, 
+    addImages, 
+    removeImage, 
+    submitTask, 
+    isSubmitting 
+  } = useTaskStore();
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setDetails(prev => ({ ...prev, [name]: value }));
+    updateTaskForm({ [name]: value });
   };
 
   const handleImageUpload = (e) => {
     const files = Array.from(e.target.files);
-    setDetails(prev => ({ ...prev, images: [...prev.images, ...files] }));
+    addImages(files);
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log("Form submission would happen here");
-    onNext(); 
+    if (onSubmitStart) onSubmitStart();
+    const success = await submitTask(getToken, navigate);
+    if (onSubmitEnd) onSubmitEnd();
   };
 
   return (
@@ -39,10 +49,18 @@ const DetailsStep = ({ onNext, onBack }) => {
                 className="details-textarea" 
                 name="additionalInfo"
                 placeholder="Describe what needs to be done..."
-                value={details.additionalInfo}
+                value={taskForm.additionalInfo}
                 onChange={handleChange}
                 rows={5}
               />
+              
+              <div className="task-summary">
+                <h4>Task Summary</h4>
+                <p><strong>Title:</strong> {taskForm.taskTitle || "Not specified"}</p>
+                <p><strong>Budget:</strong> {taskForm.budget?.currency || "$"} {taskForm.budget?.amount || "0"}</p>
+                <p><strong>Location:</strong> {taskForm.location || "Not specified"}</p>
+                <p><strong>Description:</strong> {taskForm.description || "Not specified"}</p>
+              </div>
             </div>
 
             <div className="detail-card">
@@ -63,20 +81,48 @@ const DetailsStep = ({ onNext, onBack }) => {
                   accept="image/*"
                 />
               </div>
-              {details.images.length > 0 && (
-                <div style={{ marginTop: '15px' }}>
-                  <p>Selected files: {details.images.length}</p>
+              
+              {taskForm.images?.length > 0 && (
+                <div className="image-preview-container">
+                  <p>{taskForm.images.length} image(s) selected</p>
+                  <div className="image-previews">
+                    {taskForm.images.map((img, index) => (
+                      <div key={index} className="image-preview-item">
+                        <img 
+                          src={URL.createObjectURL(img)} 
+                          alt={`Preview ${index}`} 
+                          className="image-preview"
+                        />
+                        <button 
+                          type="button" 
+                          className="remove-image-btn"
+                          onClick={() => removeImage(index)}
+                        >
+                          ✕
+                        </button>
+                      </div>
+                    ))}
+                  </div>
                 </div>
               )}
             </div>
           </div>
 
           <div className="navigation-buttons">
-            <button type="button" className="nav-button back-button" onClick={onBack}>
+            <button 
+              type="button" 
+              className="nav-button back-button" 
+              onClick={onBack}
+              disabled={isSubmitting}
+            >
               Back
             </button>
-            <button type="submit" className="nav-button next-button">
-              Submit Task
+            <button 
+              type="submit" 
+              className="nav-button next-button"
+              disabled={isSubmitting}
+            >
+              {isSubmitting ? 'Creating Task...' : 'Submit Task'}
             </button>
           </div>
         </div>

@@ -2,67 +2,65 @@ import React, { useState } from 'react';
 import '../css/CreateTask.css';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
+import { useTaskStore } from '../../store/useTaskStore';
 
 const CreateTask = ({ onNext, onBack }) => {
-  const [taskData, setTaskData] = useState({
-    onDate: null,
-    beforeDate: null,
-    isFlexible: false,
-    taskTitle: ''
-  });
-
+  const { taskForm, updateTaskForm } = useTaskStore();
+  
   const [showOnDateCalendar, setShowOnDateCalendar] = useState(false);
   const [showBeforeDateCalendar, setShowBeforeDateCalendar] = useState(false);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setTaskData(prev => ({
-      ...prev,
-      [name]: value,
-      isFlexible: false 
-    }));
+    updateTaskForm({ [name]: value });
   };
 
   const handleFlexibleToggle = () => {
-    setTaskData(prev => ({
-      ...prev,
-      isFlexible: !prev.isFlexible,
+    const newIsFlexible = !taskForm.isFlexible;
+    
+    updateTaskForm({ 
+      isFlexible: newIsFlexible,
       onDate: null,
       beforeDate: null
-    }));
+    });
   };
 
   const handleDateSelect = (date, type) => {
     console.log(`Selected ${type} date:`, date);
+    
     if (type === 'onDate') {
-      setTaskData(prev => ({ 
-        ...prev, 
+      updateTaskForm({ 
         onDate: date, 
         beforeDate: null, 
         isFlexible: false 
-      }));
+      });
+      
       setShowOnDateCalendar(false);
     } else {
-      setTaskData(prev => ({ 
-        ...prev, 
+      updateTaskForm({ 
         beforeDate: date, 
         onDate: null, 
         isFlexible: false 
-      }));
+      });
+      
       setShowBeforeDateCalendar(false);
     }
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    if (!taskData.onDate && !taskData.beforeDate && !taskData.isFlexible) {
+    
+    if (!taskForm.onDate && !taskForm.beforeDate && !taskForm.isFlexible) {
       alert('Please select a deadline option');
       return;
     }
-    if (!taskData.taskTitle) {
+    
+    if (!taskForm.taskTitle) {
       alert('Please enter a task title');
       return;
     }
+    
+    console.log('Task basics data saved:', taskForm);
     onNext();
   };
 
@@ -88,15 +86,15 @@ const CreateTask = ({ onNext, onBack }) => {
                 <div className="date-option-group">
                   <button 
                     type="button"
-                    className={`date-select ${taskData.onDate ? 'active' : ''}`}
+                    className={`date-select ${taskForm.onDate ? 'active' : ''}`}
                     onClick={() => setShowOnDateCalendar(!showOnDateCalendar)}
                   >
-                    {taskData.onDate ? formatDate(taskData.onDate) : 'On date'}
+                    {taskForm.onDate ? formatDate(taskForm.onDate) : 'On date'}
                   </button>
                   {showOnDateCalendar && (
                     <div className="calendar-container">
                       <DatePicker
-                        selected={taskData.onDate}
+                        selected={taskForm.onDate}
                         onChange={(date) => handleDateSelect(date, 'onDate')}
                         inline
                         minDate={new Date()}
@@ -109,15 +107,15 @@ const CreateTask = ({ onNext, onBack }) => {
                 <div className="date-option-group">
                   <button 
                     type="button"
-                    className={`date-select ${taskData.beforeDate ? 'active' : ''}`}
+                    className={`date-select ${taskForm.beforeDate ? 'active' : ''}`}
                     onClick={() => setShowBeforeDateCalendar(!showBeforeDateCalendar)}
                   >
-                    {taskData.beforeDate ? formatDate(taskData.beforeDate) : 'Before date'}
+                    {taskForm.beforeDate ? formatDate(taskForm.beforeDate) : 'Before date'}
                   </button>
                   {showBeforeDateCalendar && (
                     <div className="calendar-container">
                       <DatePicker
-                        selected={taskData.beforeDate}
+                        selected={taskForm.beforeDate}
                         onChange={(date) => handleDateSelect(date, 'beforeDate')}
                         inline
                         minDate={new Date()}
@@ -129,7 +127,7 @@ const CreateTask = ({ onNext, onBack }) => {
 
                 <button 
                   type="button"
-                  className={`date-option-flexible ${taskData.isFlexible ? 'active' : ''}`}
+                  className={`date-option-flexible ${taskForm.isFlexible ? 'active' : ''}`}
                   onClick={handleFlexibleToggle}
                 >
                   I'm flexible
@@ -146,7 +144,7 @@ const CreateTask = ({ onNext, onBack }) => {
                 className="task-input"
                 name="taskTitle"
                 placeholder="e.g. Help move my sofa"
-                value={taskData.taskTitle}
+                value={taskForm.taskTitle}
                 onChange={handleChange}
                 required
               />

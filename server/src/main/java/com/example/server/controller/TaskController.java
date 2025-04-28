@@ -150,4 +150,16 @@ public class TaskController {
             return ResponseEntity.status(INTERNAL_SERVER_ERROR).body(new ApiResponse(e.getMessage(), false, null));
         }
     }
+
+    @PreAuthorize("isAuthenticated()")
+    @GetMapping("/my-posted-tasks")
+    public ResponseEntity<ApiResponse> getMyPostedTasks() {
+        try {
+            List<Task> tasks = taskService.getTasksByCurrentUser();
+            return ResponseEntity.ok(new ApiResponse("Retrieved your posted tasks successfully", true, tasks));
+        } catch (Exception e) {
+            return ResponseEntity.status(INTERNAL_SERVER_ERROR).body(new ApiResponse(e.getMessage(), false, null));
+        }
+    }
+
 }

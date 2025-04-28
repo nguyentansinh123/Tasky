@@ -1,12 +1,23 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import '../css/LogIn.css'
-import { Link, Links } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
+import { useAuthStore } from '../../store/useAuthStore';
 
 const LogIn = () => {
     const [formData, setFormData] = useState({
         email: '',
         password: ''
     });
+
+    const navigate = useNavigate();
+    const { login, isLoggingIn, authUser } = useAuthStore();
+
+    useEffect(() => {
+        if (authUser) {
+          console.log(authUser)
+            navigate('/');
+        }
+    }, [authUser, navigate]);
 
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -19,13 +30,12 @@ const LogIn = () => {
     const handleSubmit = (e) => {
         e.preventDefault();
         console.log('Form submitted:', formData);
-        // Add your login logic here
+        login(formData.email, formData.password);
     };
 
     return(
         <div className="signIn_Container">
           <div className="signIn_Container_Wrapper">
-            {/* Left Column - Form */}
             <div className="signIn_Container_Wrapper_FormSection">
               <h1 className="signIn_Container_Wrapper_Title">Welcome to App name</h1>
               <p className="signIn_Container_Wrapper_Subtitle">
@@ -59,8 +69,12 @@ const LogIn = () => {
                   />
                 </div>
     
-                <button type="submit" className="signIn_Container_Wrapper_SubmitButton">
-                  Sign In
+                <button 
+                  type="submit" 
+                  className="signIn_Container_Wrapper_SubmitButton"
+                  disabled={isLoggingIn}
+                >
+                  {isLoggingIn ? 'Signing In...' : 'Sign In'}
                 </button>
               </form>
     
@@ -73,7 +87,6 @@ const LogIn = () => {
               </div>
             </div>
     
-            {/* Right Column - Hero Text */}
             <div className="signIn_Container_Wrapper_HeroSection">
               <h2 className="signIn_Container_Wrapper_HeroTitle">
                 Wander. Unwind. Your Journey Begins Here

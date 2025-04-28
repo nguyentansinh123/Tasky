@@ -26,6 +26,8 @@ public interface ITaskService {
     List<Task> getTasksByCategory(String category);
     List<Task> getTasksByFlexibleDate(boolean flexibleDate);
     List<Task> getTasksByLocation(String location);
+    List<Task> getTasksByCurrentUser();
 
     TaskDto convertTaskToDto(Task task);
+
 }

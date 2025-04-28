@@ -1,6 +1,6 @@
 import React from "react";
 
-const ProgressBar = ({ currentStep, totalSteps }) => {
+const ProgressBar = ({ currentStep, totalSteps, isSubmitting = false }) => {
   return (
     <div className="progress-steps">
       {[...Array(totalSteps)].map((_, index) => (
@@ -11,6 +11,13 @@ const ProgressBar = ({ currentStep, totalSteps }) => {
           {index + 1}
         </div>
       ))}
+      
+      {isSubmitting && (
+        <div className="submission-indicator">
+          <div className="spinner"></div>
+          <span>Creating your task...</span>
+        </div>
+      )}
     </div>
   );
 };

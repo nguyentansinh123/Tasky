@@ -14,6 +14,7 @@ import com.example.server.security.jwt.JwtUtils;
 import com.example.server.security.user.ShopUserDetails;
 import com.example.server.service.Email.EmailService;
 import com.example.server.service.token.TokenService;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -135,5 +136,34 @@ public class AuthController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                     .body(new ApiResponse("An unexpected error occurred while confirming the token.", false, e.getMessage()));
         }
+    }
+
+    @GetMapping("/check")
+    public ResponseEntity<ApiResponse> checkAuthentication(HttpServletRequest request) {
+        String headerAuth = request.getHeader("Authorization");
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+
+        if (authentication != null && authentication.isAuthenticated()) {
+            // Handle the case where principal is a String (username)
+            String email;
+            if (authentication.getPrincipal() instanceof String) {
+                email = (String) authentication.getPrincipal();
+            } else {
+                ShopUserDetails userDetails = (ShopUserDetails) authentication.getPrincipal();
+                email = userDetails.getUsername();
+            }
+
+            User user = userRepository.findByEmail(email);
+
+            if (user == null) {
+                return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+                        .body(new ApiResponse("User not found", false, null));
+            }
+
+            return ResponseEntity.ok(new ApiResponse("User is authenticated", true, user));
+        }
+
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+                .body(new ApiResponse("User is not authenticated", false, null));
     }
 }

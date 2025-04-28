@@ -1,25 +1,28 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useEffect, useRef } from 'react';
 import '../css/CreateTask.css';
+import { useTaskStore } from '../../store/useTaskStore';
 
 const CreateTaskStep2 = ({ onNext, onBack }) => {
-  const [details, setDetails] = useState({
-    description: '',
-    location: ''
-  });
+  const { taskForm, updateTaskForm } = useTaskStore();
   const autocompleteRef = useRef(null);
   const inputRef = useRef(null);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setDetails(prev => ({ ...prev, [name]: value }));
+    updateTaskForm({ [name]: value });
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    
+    if (!taskForm.description || !taskForm.location) {
+      alert('Please complete all required fields');
+      return;
+    }
+    
     onNext();
   };
   
-
   useEffect(() => {
     const apiKey = import.meta.env.VITE_GOOGLE_API_KEY;
     function initAutocomplete() {
@@ -31,10 +34,11 @@ const CreateTaskStep2 = ({ onNext, onBack }) => {
 
         autocompleteRef.current.addListener('place_changed', () => {
           const place = autocompleteRef.current.getPlace();
-          setDetails(prev => ({
-            ...prev,
-            location: place.formatted_address || inputRef.current.value
-          }));
+          const formattedAddress = place.formatted_address || inputRef.current.value;
+          
+          updateTaskForm({ location: formattedAddress });
+          
+          console.log("Selected Google location:", formattedAddress);
         });
       }
     }
@@ -54,12 +58,11 @@ const CreateTaskStep2 = ({ onNext, onBack }) => {
     }
 
     return () => {
-      // Clean up listener if component unmounts
       if (autocompleteRef.current && window.google) {
         window.google.maps.event.clearInstanceListeners(autocompleteRef.current);
       }
     };
-  }, []);
+  }, [updateTaskForm]);
 
   return (
     <form onSubmit={handleSubmit}>
@@ -74,7 +77,7 @@ const CreateTaskStep2 = ({ onNext, onBack }) => {
             className="task-input"
             name="description"
             placeholder="e.g. I need help moving a 3-seater sofa from my living room to my new apartment..."
-            value={details.description}
+            value={taskForm.description}
             onChange={handleChange}
             rows={4}
             required
@@ -91,11 +94,17 @@ const CreateTaskStep2 = ({ onNext, onBack }) => {
             className="task-input"
             name="location"
             placeholder="Enter address or location"
-            value={details.location}
+            value={taskForm.location}
             onChange={handleChange}
             required
           />
         </div>
+        
+        {taskForm.location && (
+          <div className="location-preview">
+            <p>📍 Selected location: {taskForm.location}</p>
+          </div>
+        )}
       </div>
 
       <div className="navigation-buttons">

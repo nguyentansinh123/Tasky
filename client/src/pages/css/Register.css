@@ -201,3 +201,31 @@
     flex: 1;
     margin-bottom: 0;
   }
+
+  .verification-instructions {
+    margin-bottom: 20px;
+    color: #555;
+    line-height: 1.5;
+    font-size: 0.95rem;
+  }
+
+  .verification-note {
+    margin-top: 20px;
+    font-size: 0.85rem;
+    color: #666;
+  }
+
+  .resend-button {
+    background: none;
+    border: none;
+    color: #007bff;
+    text-decoration: underline;
+    cursor: pointer;
+    font-size: 0.85rem;
+    margin-left: 5px;
+    padding: 0;
+  }
+
+  .resend-button:hover {
+    color: #0056b3;
+  }
