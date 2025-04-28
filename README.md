@@ -1,74 +1,124 @@
 Tasky
-Modern Task Management with Real-Time Collaboration
-Tasky is a comprehensive task and project management application that combines productivity tools with real-time communication features. Built with a modern tech stack, Tasky helps teams stay organized, communicate effectively, and complete projects on schedule.
+<div align="center"> <img src="https://raw.githubusercontent.com/yourusername/tasky/main/client/public/tasky-logo.png" alt="Tasky Logo" width="200"> <h3>Streamlined Task Management with Real-Time Collaboration</h3>
 
-Key Features
-Task Management
-Intuitive Kanban Boards: Visualize workflows with customizable boards
-Task Prioritization: Easily sort and filter tasks by priority, due date, or assignee
-Progress Tracking: Monitor project advancement through comprehensive dashboards
-Deadline Management: Set and track deadlines with automated reminders
-Real-Time Communication
-Instant Messaging: Chat with team members in real-time
-Private and Group Conversations: Communicate one-on-one or in project-specific groups
-Message Notifications: Stay informed with new message indicators
-Persistent Chat History: Access your complete conversation history anytime
-User Experience
-Clean, Modern Interface: Enjoy a distraction-free workspace with intuitive navigation
-Responsive Design: Access Tasky seamlessly across desktop and mobile devices
-Dark/Light Themes: Choose the visual theme that suits your preference
-Search Functionality: Quickly find tasks, projects, or messages
-Technology Stack
+<img alt="License: MIT" src="https://img.shields.io/badge/License-MIT-blue.svg">
+<img alt="React" src="https://img.shields.io/badge/React-18.x-61DAFB?logo=react">
+<img alt="Spring Boot" src="https://img.shields.io/badge/Spring_Boot-3.x-6DB33F?logo=spring-boot">
+<img alt="WebSocket" src="https://img.shields.io/badge/WebSocket-Enabled-4caf50">
+</div>
+📖 Overview
+Tasky is a powerful task management platform designed for modern teams. It combines intuitive project organization with real-time communication features to enhance productivity and team collaboration. Whether managing personal tasks or coordinating complex team projects, Tasky provides the tools you need to stay organized and connected.
+
+✨ Features
+📋 Task Management
+Interactive Kanban Boards - Visualize workflows with drag-and-drop functionality
+Task Customization - Set priorities, deadlines, labels, and assignees
+Smart Filtering - Find tasks by status, priority, due date, or team member
+Progress Tracking - Track completion rates and project status at a glance
+💬 Real-Time Communications
+Instant Messaging - Chat with team members without switching applications
+Message Notifications - Get alerted when new messages arrive
+User Presence Indicators - See who's online and available
+Conversation History - Search and reference past discussions
+🔒 Security & Administration
+Role-Based Access Control - Control who can view or modify projects
+JWT Authentication - Secure user sessions and API endpoints
+Data Encryption - Protect sensitive information in transit and at rest
+Activity Logging - Track changes and maintain accountability
+🎨 User Experience
+Responsive Design - Seamless experience across desktop and mobile devices
+Customizable Interface - Personalize views to suit your workflow
+Keyboard Shortcuts - Navigate efficiently for power users
+Accessibility Support - Designed for users of all abilities
+🚀 Technology Stack
 Frontend
-React.js with hooks for state management
-STOMP/WebSocket for real-time communications
-CSS3 with responsive design principles
-React Icons for consistent UI elements
+React - Component-based UI development with hooks
+STOMP/WebSocket - Real-time bidirectional communication
+CSS3/SASS - Custom styling with responsive design
+Axios - Promise-based HTTP client for API requests
 Backend
-Java Spring Boot RESTful API
-WebSocket integration for real-time features
-JWT authentication for secure access
-JPA/Hibernate for database operations
-Database
-Relational database for structured data storage
-Optimized queries for fast data retrieval
-Getting Started
+Spring Boot - Fast and efficient API development
+Spring Security - Authentication and authorization
+Spring Data JPA - Database operations and ORM
+WebSocket - Real-time messaging infrastructure
+Database & Storage
+MySQL/PostgreSQL - Relational database support
+Redis - Caching and session management
+AWS S3 - File storage for attachments (optional)
+📦 Installation
 Prerequisites
-Node.js 16.x or higher
-Java 17 or higher
-Maven 3.8 or higher
+Node.js 16.x or later
+Java JDK 17 or later
+Maven 3.8+
 MySQL 8.0 or PostgreSQL 13+
-Installation
-Clone the repository:
+Backend Setup:
 
-Set up the backend:
+# Clone the repository
+git clone https://github.com/yourusername/tasky.git
+cd tasky
 
-Set up the frontend:
+# Configure database
+# Edit application.properties with your database credentials
 
-Access the application at http://localhost:3000
+# Build and run the server
+cd server
+mvn clean install
+mvn spring-boot:run
 
-Usage
-Creating Tasks
-Navigate to your project board
-Click "Add Task"
-Fill in task details and assign team members
-Set priority and deadline
-Save the task
-Communication
-Select a team member from the sidebar
-Type your message in the input field
-Press Enter or click Send
-Receive real-time notifications when new messages arrive
-Roadmap
-File Sharing: Attach and share files within chats and tasks
-Calendar Integration: Sync with popular calendar applications
-API Integrations: Connect with third-party tools like GitHub, Slack, and Google Workspace
-Advanced Analytics: Get deeper insights into productivity and project progress
-Mobile Applications: Native iOS and Android apps
-Contributing
-We welcome contributions to Tasky! Please read our Contributing Guidelines to get started.
+Frontend Setup:
 
-License
-Tasky is licensed under the MIT License - see the LICENSE file for details.
+# Navigate to client directory
+cd ../client
 
-Built with ❤️ by Sinh Nguyen and Sinh Nguyen Alone
+# Install dependencies
+npm install
+
+# Start development server
+npm run dev
+
+🖥️ Usage
+Creating a Project
+
+1. Click "New Project" in the dashboard
+2. Enter project name, description, and select team members
+3. Choose template or start from scratch
+4. Set project visibility and permissions
+
+Managing Tasks:
+1. Navigate to project board
+2. Click "+ Add Task" in the appropriate column
+3. Fill in task details including title, description, priority
+4. Assign team members and set deadline
+5. Drag and drop tasks between status columns as they progress
+
+Communication:
+1. Select a user or channel from the sidebar
+2. Type message in the input field
+3. Press Enter or click Send
+4. Use @mentions to notify specific team members
+5. Attach files by clicking the paperclip icon
+
+📊 API Documentation
+Tasky provides a comprehensive RESTful API for integrating with other services:
+
+API Docs: https://api.taskyapp.com/docs
+Swagger UI: Available at http://localhost:9193/swagger-ui.html when running locally
+Postman Collection: Available in the /docs directory
+🛠️ Configuration Options
+
+Option	Default	Description
+APP_PORT	9193	Backend server port
+CLIENT_PORT	5173	Frontend development server port
+DB_TYPE	mysql	Database type (mysql or postgresql)
+JWT_EXPIRATION	3600000	JWT token expiration in ms
+WS_ENDPOINT	/ws	WebSocket endpoint path
+ENABLE_HISTORY	true	Store chat message history
+🤝 Contributing
+Contributions are welcome! Please follow these steps:
+
+Fork the repository
+Create a feature branch (git checkout -b feature/amazing-feature)
+Commit your changes (git commit -m 'Add some amazing feature')
+Push to the branch (git push origin feature/amazing-feature)
+Open a Pull Request
+
