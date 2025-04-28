@@ -1,124 +1,162 @@
 Tasky
-<div align="center"> <img src="https://raw.githubusercontent.com/yourusername/tasky/main/client/public/tasky-logo.png" alt="Tasky Logo" width="200"> <h3>Streamlined Task Management with Real-Time Collaboration</h3>
+<div align="center"> <img src="https://raw.githubusercontent.com/yourusername/tasky/main/client/public/tasky-logo.png" alt="Tasky Logo" width="200" /> <h3>Simple Task & Team Management with Real-Time Chat</h3> <img alt="License: MIT" src="https://img.shields.io/badge/License-MIT-blue.svg" /> <img alt="React" src="https://img.shields.io/badge/React-18.x-61DAFB?logo=react" /> <img alt="Spring Boot" src="https://img.shields.io/badge/Spring_Boot-3.x-6DB33F?logo=spring-boot" /> <img alt="WebSocket" src="https://img.shields.io/badge/WebSocket-Enabled-4caf50" /> </div>
+📖 What is Tasky?
+Tasky helps people and teams get work done by organizing tasks, tracking progress, and chatting in real-time — all in one place. Whether you're planning a small personal project or working with a big team, Tasky makes it easy to stay on track and in touch.
 
-<img alt="License: MIT" src="https://img.shields.io/badge/License-MIT-blue.svg">
-<img alt="React" src="https://img.shields.io/badge/React-18.x-61DAFB?logo=react">
-<img alt="Spring Boot" src="https://img.shields.io/badge/Spring_Boot-3.x-6DB33F?logo=spring-boot">
-<img alt="WebSocket" src="https://img.shields.io/badge/WebSocket-Enabled-4caf50">
-</div>
-📖 Overview
-Tasky is a powerful task management platform designed for modern teams. It combines intuitive project organization with real-time communication features to enhance productivity and team collaboration. Whether managing personal tasks or coordinating complex team projects, Tasky provides the tools you need to stay organized and connected.
+✨ What You Can Do
+✅ Stay Organized
+Drag and drop tasks on a visual board
 
-✨ Features
-📋 Task Management
-Interactive Kanban Boards - Visualize workflows with drag-and-drop functionality
-Task Customization - Set priorities, deadlines, labels, and assignees
-Smart Filtering - Find tasks by status, priority, due date, or team member
-Progress Tracking - Track completion rates and project status at a glance
-💬 Real-Time Communications
-Instant Messaging - Chat with team members without switching applications
-Message Notifications - Get alerted when new messages arrive
-User Presence Indicators - See who's online and available
-Conversation History - Search and reference past discussions
-🔒 Security & Administration
-Role-Based Access Control - Control who can view or modify projects
-JWT Authentication - Secure user sessions and API endpoints
-Data Encryption - Protect sensitive information in transit and at rest
-Activity Logging - Track changes and maintain accountability
-🎨 User Experience
-Responsive Design - Seamless experience across desktop and mobile devices
-Customizable Interface - Personalize views to suit your workflow
-Keyboard Shortcuts - Navigate efficiently for power users
-Accessibility Support - Designed for users of all abilities
-🚀 Technology Stack
+Add priorities, deadlines, tags, and team members to tasks
+
+Filter tasks to find what you need fast
+
+Keep track of what’s done and what’s still in progress
+
+💬 Talk With Your Team
+Send messages instantly without switching apps
+
+Get notified when someone sends you a message
+
+See who’s online right now
+
+Look back at past conversations when needed
+
+🔒 Safe and Secure
+Choose who can see or change things
+
+Sign in safely with secure login
+
+Keep your data safe with encryption
+
+Log all changes so you can track what happened
+
+🎨 Easy to Use
+Works great on computers and phones
+
+Change how your workspace looks to fit your style
+
+Use keyboard shortcuts to move faster
+
+Designed for everyone, including people with disabilities
+
+🛠️ What It's Built With
 Frontend
-React - Component-based UI development with hooks
-STOMP/WebSocket - Real-time bidirectional communication
-CSS3/SASS - Custom styling with responsive design
-Axios - Promise-based HTTP client for API requests
-Backend
-Spring Boot - Fast and efficient API development
-Spring Security - Authentication and authorization
-Spring Data JPA - Database operations and ORM
-WebSocket - Real-time messaging infrastructure
-Database & Storage
-MySQL/PostgreSQL - Relational database support
-Redis - Caching and session management
-AWS S3 - File storage for attachments (optional)
-📦 Installation
-Prerequisites
-Node.js 16.x or later
-Java JDK 17 or later
-Maven 3.8+
-MySQL 8.0 or PostgreSQL 13+
-Backend Setup:
+React – For building the user interface
 
-# Clone the repository
+WebSocket + STOMP – For real-time updates and chat
+
+CSS/SASS – For styling
+
+Axios – To send requests to the backend
+
+Backend
+Spring Boot – For handling API and logic
+
+Spring Security – For user login and permissions
+
+JPA – For working with the database
+
+WebSocket – For real-time messaging
+
+Database & Storage
+MySQL or PostgreSQL – To store data
+
+Redis – To speed things up and manage sessions
+
+AWS S3 (optional) – To store files like attachments
+
+📦 How to Set It Up
+Requirements
+Node.js (version 16 or higher)
+
+Java JDK 17 or higher
+
+Maven 3.8 or higher
+
+MySQL 8+ or PostgreSQL 13+
+
+Backend (Server)
+bash
+Copy
+Edit
+# Clone the project
 git clone https://github.com/yourusername/tasky.git
 cd tasky
 
-# Configure database
-# Edit application.properties with your database credentials
+# Update your database info in server/src/main/resources/application.properties
 
-# Build and run the server
+# Build and start the backend
 cd server
 mvn clean install
 mvn spring-boot:run
-
-Frontend Setup:
-
-# Navigate to client directory
+Frontend (Client)
+bash
+Copy
+Edit
 cd ../client
 
-# Install dependencies
+# Install everything
 npm install
 
-# Start development server
+# Start the app
 npm run dev
+🖥️ How to Use Tasky
+Make a New Project
+Click "New Project" on the main screen
 
-🖥️ Usage
-Creating a Project
+Add a name, description, and pick your team
 
-1. Click "New Project" in the dashboard
-2. Enter project name, description, and select team members
-3. Choose template or start from scratch
-4. Set project visibility and permissions
+Choose a template or start fresh
 
-Managing Tasks:
-1. Navigate to project board
-2. Click "+ Add Task" in the appropriate column
-3. Fill in task details including title, description, priority
-4. Assign team members and set deadline
-5. Drag and drop tasks between status columns as they progress
+Set who can see and edit the project
 
-Communication:
-1. Select a user or channel from the sidebar
-2. Type message in the input field
-3. Press Enter or click Send
-4. Use @mentions to notify specific team members
-5. Attach files by clicking the paperclip icon
+Add and Manage Tasks
+Go to the project board
 
-📊 API Documentation
-Tasky provides a comprehensive RESTful API for integrating with other services:
+Click "+ Add Task"
 
-API Docs: https://api.taskyapp.com/docs
-Swagger UI: Available at http://localhost:9193/swagger-ui.html when running locally
-Postman Collection: Available in the /docs directory
-🛠️ Configuration Options
+Fill in task name, details, and pick team members
 
-Option	Default	Description
-APP_PORT	9193	Backend server port
-CLIENT_PORT	5173	Frontend development server port
-DB_TYPE	mysql	Database type (mysql or postgresql)
-JWT_EXPIRATION	3600000	JWT token expiration in ms
-WS_ENDPOINT	/ws	WebSocket endpoint path
-ENABLE_HISTORY	true	Store chat message history
-🤝 Contributing
-Contributions are welcome! Please follow these steps:
+Set deadlines or tags
 
-Fork the repository
-Create a feature branch (git checkout -b feature/amazing-feature)
-Commit your changes (git commit -m 'Add some amazing feature')
-Push to the branch (git push origin feature/amazing-feature)
-Open a Pull Request
+Drag tasks between columns as they move forward
 
+Chat with Others
+Pick a teammate or group on the sidebar
+
+Type your message and hit Enter
+
+Use @name to tag someone
+
+Click the paperclip to attach a file
+
+📊 API Info
+Full API Docs: https://api.taskyapp.com/docs
+
+Swagger UI (for local testing): http://localhost:9193/swagger-ui.html
+
+Postman Collection: Check the /docs folder
+
+⚙️ Settings You Can Change
+
+| Setting           | Default   | What It Does                          |
+|-------------------|-----------|----------------------------------------|
+| `APP_PORT`        | `9193`    | Port for backend server               |
+| `CLIENT_PORT`     | `5173`    | Port for frontend dev server          |
+| `DB_TYPE`         | `mysql`   | Choose `mysql` or `postgresql`        |
+| `JWT_EXPIRATION`  | `3600000` | How long login stays active (ms)      |
+| `WS_ENDPOINT`     | `/ws`     | WebSocket path for real-time chat     |
+| `ENABLE_HISTORY`  | `true`    | Save chat history or not              |
+🤝 Want to Help?
+We’d love your help! To contribute:
+
+Fork this repo
+
+Create a new branch: git checkout -b feature/your-feature-name
+
+Make your changes and commit: git commit -m "Add your feature"
+
+Push it: git push origin feature/your-feature-name
+
+Open a Pull Request on GitHub
