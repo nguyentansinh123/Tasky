@@ -1,5 +1,5 @@
 Tasky
-<div align="center"> <img src="https://raw.githubusercontent.com/yourusername/tasky/main/client/public/tasky-logo.png" alt="Tasky Logo" width="200" /> <h3>Simple Task & Team Management with Real-Time Chat</h3> <img alt="License: MIT" src="https://img.shields.io/badge/License-MIT-blue.svg" /> <img alt="React" src="https://img.shields.io/badge/React-18.x-61DAFB?logo=react" /> <img alt="Spring Boot" src="https://img.shields.io/badge/Spring_Boot-3.x-6DB33F?logo=spring-boot" /> <img alt="WebSocket" src="https://img.shields.io/badge/WebSocket-Enabled-4caf50" /> </div>
+<div align="center"> <img src="https://raw.githubusercontent.com/yourusername/tasky/main/client/public/tasky-logo.png" alt="Tasky Logo" width="200" /> <h3>Simple Task & Team Management with Real-Time Chat</h3> <img alt="React" src="https://img.shields.io/badge/React-18.x-61DAFB?logo=react" /> <img alt="Spring Boot" src="https://img.shields.io/badge/Spring_Boot-3.x-6DB33F?logo=spring-boot" /> <img alt="WebSocket" src="https://img.shields.io/badge/WebSocket-Enabled-4caf50" /> </div>
 📖 What is Tasky?
 Tasky helps people and teams get work done by organizing tasks, tracking progress, and chatting in real-time — all in one place. Whether you're planning a small personal project or working with a big team, Tasky makes it easy to stay on track and in touch.
 
